@@ -7,6 +7,7 @@ var haloID = '219630713';
 var rainbowSixSeigeID = '926771636';
 var smiteID = '1134837784';
 var url = 'https://xboxapi.com/v2/2533274809416934/game-stats/'
+var prettyjson = require('prettyjson');
 var forHalo = {
 	url: url + haloID,
 	method: 'GET',
@@ -83,13 +84,16 @@ function GetSmite() {
 // 
 router.get('/', function(req, res) {
 	// Promise.all([GetSmite(), GetRainbow(), GetHalo()]).then(function(data) {
-	// 	knex('userInfo').insert([{rainbowSixSeigeData: JSON.stringify(data[1])}, {halo: JSON.stringify(data[2])}, {smite: JSON.stringify(data[0])}]).catch(function(err) { console.log(err); });
+	// 	knex('userInfo').insert({rainbowSixSeigeData: JSON.stringify(data[1]), halo: JSON.stringify(data[2]), smite: JSON.stringify(data[0])}).catch(function(err) { console.log(err); });
 	// 	console.log(data);
 	// }).catch(function(err) {
 	// 	console.log(err);
 	// }).then(function() {
-		knex('userInfo').then(function(data) {
-			console.log(data);
+		knex("userInfo").then(function(data) {
+			var data2 = JSON.parse(data[0].halo);
+			var data3 = JSON.parse(data[0].smite)
+			var data4 = JSON.parse(data[0].rainbowSixSeigeData)
+			console.log(prettyjson.render([data2, data3, data4]));
 		})
 	// });
 	res.render('pages/index');
